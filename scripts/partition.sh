@@ -27,6 +27,7 @@ umount_all() {
 preset_partition() {
     umount_all
 
+    BIOS_SIZE="5"
     EFI_SIZE="1024"
     SWAP_SIZE="4096"
     ROOT_SIZE="53248"
@@ -38,7 +39,6 @@ preset_partition() {
 
         local END_POINT=$((START_POINT + PART_SIZE))
 
-        echo "Creating ${PART_NAME} partition"
         parted --script "$DISK" mkpart '""' "$PART_TYPE" ${START_POINT}MiB ${END_POINT}MiB
     
         START_POINT=$END_POINT
@@ -49,19 +49,25 @@ preset_partition() {
     echo "Creating GPT parition table on $DISK"
     parted --script "$DISK" mklabel gpt
 
-    create_partition "fat32" $EFI_SIZE
-    parted --script "$DISK" set 1 esp on
+    if [ -d /sys/firmware/efi ]; then
+        echo "UEFI supported, creating EFI partition..."
+        create_partition "fat32" $EFI_SIZE
+        parted --script "$DISK" set 1 esp on
+        EFI_PART="${DISK}1"
+    else
+        echo "UEFI not supported, creating BIOS boot partition..."
+        create_partition "bios_grub" $BIOS_SIZE
+        BIOS_PART="${DISK}1"
+    fi
 
     create_partition "linux-swap" $SWAP_SIZE
+    SWAP_PART="${DISK}2"
 
     create_partition "ext4" $ROOT_SIZE
+    ROOT_PART="${DISK}3"
 
     echo "Creating Home parititon with remaining space"
     parted --script "$DISK" mkpart '""' ext4 ${START_POINT}MiB 100%
-
-    EFI_PART="${DISK}1"
-    SWAP_PART="${DISK}2"
-    ROOT_PART="${DISK}3"
     HOME_PART="${DISK}4"
 
     format_and_mount
@@ -70,7 +76,12 @@ preset_partition() {
 format_and_mount() {
     echo "Formatting partitions..."
 
-    [ -n "$EFI_PART" ] && mkfs.fat -F 32 "$EFI_PART"
+    if [ -n "$EFI_PART" ]; then
+        mkfs.fat -F 32 "$EFI_PART"
+    elif [ -n "$BIOS_PART" ]; then
+        echo "BIOS boot partition created, no formatting needed."
+    fi
+
     [ -n "$SWAP_PART" ] && { mkswap "$SWAP_PART"; swapon "$SWAP_PART"; }
     [ -n "$ROOT_PART" ] && mkfs.ext4 "$ROOT_PART"
     [ -n "$HOME_PART" ] && mkfs.ext4 "$HOME_PART"
