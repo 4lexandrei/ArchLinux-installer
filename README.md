@@ -18,4 +18,6 @@ Planning to add:
 - Better bash UI
 - Optimize mirrorlist with reflector
 - Set ntp true
+- BIOS support
+
 
