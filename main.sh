@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear
+
 # Make scripts executable
 chmod +x ./scripts/prompts.sh
 chmod +x ./scripts/partition.sh

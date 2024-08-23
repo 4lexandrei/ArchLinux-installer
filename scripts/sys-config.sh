@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear
+
 source ./ArchLinux-installer/config.sh
 
 # Configure pacman for faster installation
@@ -69,7 +71,8 @@ locale-gen
 echo "LANG=$LOCALE.UTF-8" > /etc/locale.conf
 
 # Set keyboard layout
-echo "KEYMAP=$KEYBOARD" > /etc/vconsole.conf
+localectl --no-convert set-keymap "$KEYBOARD"
+localectl --no-convert set-x11-keymap "$KEYBOARD"
 
 # Set hostname
 echo "$HOSTNAME" > /etc/hostname
@@ -83,16 +86,14 @@ sys_accounts() {
 
     sys_accounts_prompts
 
-    echo -ne "
-    =======================
-    ||  SYSTEM ACCOUNTS  ||
-    =======================
-    ||                   ||
-    || root              ||
-    || User: $USERNAME   ||
-    ||                   ||
-    =======================
-    "
+    echo -e "                         "
+    echo -e " ++===================++ "
+    echo -e " ||  SYSTEM ACCOUNTS  || "
+    echo -e " ++===================++ "
+    echo -e "  root                   "
+    echo -e "  User: $USERNAME        "
+    echo -e " +=====================+ "
+    echo -e "                         "
     # Set root password
     echo "root:$ROOT_PASSWORD" | chpasswd
 

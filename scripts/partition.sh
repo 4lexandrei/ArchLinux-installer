@@ -1,4 +1,6 @@
 #!/bin/bash
+clear
+
 source ./config.sh
 
 DISK="/dev/$DISK_ID"
