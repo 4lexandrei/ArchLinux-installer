@@ -46,7 +46,7 @@ preset_partition() {
 
     echo "Partitioning with preset configuration..."
 
-    echo "Creating GPT parition table on $DISK"
+    echo "Creating GPT parition table on $DISK..."
     parted --script "$DISK" mklabel gpt
 
     if [ -d /sys/firmware/efi ]; then
@@ -56,17 +56,20 @@ preset_partition() {
         EFI_PART="${DISK}1"
     else
         echo "UEFI not supported, creating BIOS boot partition..."
-        create_partition "bios_grub" $BIOS_SIZE
+        create_partition "" $BIOS_SIZE
+        parted --script "$DISK" set 1 bios_grub on
         BIOS_PART="${DISK}1"
     fi
 
+    echo "Creating [SWAP] partition..."
     create_partition "linux-swap" $SWAP_SIZE
     SWAP_PART="${DISK}2"
 
+    echo "Creating root partition..."
     create_partition "ext4" $ROOT_SIZE
     ROOT_PART="${DISK}3"
 
-    echo "Creating Home parititon with remaining space"
+    echo "Creating Home parititon with remaining space..."
     parted --script "$DISK" mkpart '""' ext4 ${START_POINT}MiB 100%
     HOME_PART="${DISK}4"
 
