@@ -130,6 +130,6 @@ install_additional_packages() {
 configure_pacman
 display_cpu_info
 display_gpu_info
-install_packages
+install_base_system
 generate_fstab
 install_additional_packages
