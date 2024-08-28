@@ -5,6 +5,8 @@ source ./ArchLinux-installer/config.sh
 
 # Grub installation
 if [ -d /sys/firmware/efi ]; then
+    echo "Installing efibootmgr..."
+    pacman -S efibootmgr
     echo "Installing GRUB bootloader for UEFI..."
     grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB --recheck
 else

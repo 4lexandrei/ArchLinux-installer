@@ -31,6 +31,7 @@ Script breakdown:
 4) System configuration
 
 Planning to add:
+- Manual partitioning
 - Support to zram 
 - Better bash UI
 - Optimize mirrorlist with reflector

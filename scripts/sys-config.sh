@@ -56,44 +56,21 @@ sys_accounts_prompts() {
 }
 
 
-echo "Configuring system..."
-
-# Enable services
-systemctl enable NetworkManager
-
-# Set Time
-ln -sf /usr/share/zoneinfo/"$TIMEZONE" /etc/localtime
-hwclock --systohc
-
-# Set locale
-sed -i "/^# *$LOCALE.UTF-8/s/^# *//" /etc/locale.gen
-locale-gen
-echo "LANG=$LOCALE.UTF-8" > /etc/locale.conf
-
-# Set keyboard layout
-localectl --no-convert set-keymap "$KEYBOARD"
-localectl --no-convert set-x11-keymap "$KEYBOARD"
-
-# Set hostname
-echo "$HOSTNAME" > /etc/hostname
-
-echo "System configuration completed."
-
 # System accounts
 sys_accounts() {
     clear
-    echo "Adding system accounts..."
+    echo "Configuring system accounts..."
 
     sys_accounts_prompts
 
-    echo -e "                         "
-    echo -e " ++===================++ "
-    echo -e " ||  SYSTEM ACCOUNTS  || "
-    echo -e " ++===================++ "
-    echo -e "  root                   "
-    echo -e "  User: $USERNAME        "
-    echo -e " +=====================+ "
-    echo -e "                         "
+    echo -e "                               "
+    echo -e " ++=========================++ "
+    echo -e " ||     SYSTEM ACCOUNTS     || "
+    echo -e " ++=========================++ "
+    echo -e "    root                       "
+    echo -e "    User: $USERNAME            "
+    echo -e " +===========================+ "
+    echo -e "                               "
     # Set root password
     echo "root:$ROOT_PASSWORD" | chpasswd
 
@@ -107,8 +84,32 @@ sys_accounts() {
     echo "Done."
 }
 
+echo "Configuring system..."
+
+# Enable services
+systemctl enable NetworkManager --now
+
+# Set Time
+ln -sf /usr/share/zoneinfo/"$TIMEZONE" /etc/localtime
+hwclock --systohc
+f
+# Set locale
+sed -i "/^# *$LOCALE.UTF-8/s/^# *//" /etc/locale.gen
+locale-gen
+echo "LANG=$LOCALE.UTF-8" > /etc/locale.conf
+
+# Set keyboard layout
+localectl --no-convert set-keymap "$KEYBOARD"
+localectl --no-convert set-x11-keymap "$KEYBOARD"
+
+# Set hostname
+echo "$HOSTNAME" > /etc/hostname
+
+sleep 3 
+
 sys_accounts
 
-echo -ne "
-    Please use "umount -a" command and reboot the system.
-"
+echo "System configuration completed."
+
+echo -e ""
+echo -ne "Please use "umount -a" command and reboot the system."

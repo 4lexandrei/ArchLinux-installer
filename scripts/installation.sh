@@ -12,6 +12,15 @@ configure_pacman() {
     
     # Enable multilib
     sed -i "/\[multilib\]/,/Include/ s/^#//" /etc/pacman.conf
+
+    # Optimize mirrors with reflector
+    optimize_mirrors() {
+        # Print or process the selected options
+        echo "Updating mirrors with reflector..."
+        reflector --verbose -a 48 -c "$MIRRORS" -l 20 -f 10 -p https --sort rate --save /etc/pacman.d/mirrorlist
+        echo "Mirrors optimized."
+    }
+    optimize_mirrors
 }
 
 display_cpu_info() {
@@ -59,34 +68,20 @@ display_gpu_info() {
     esac
 }
 
-install_packages() {
+install_base_system() {
     local BASE_PKGS=(
-        base linux linux-firmware
+        base 
+        linux 
+        linux-firmware
     )
 
-    local ADDITIONAL_PKGS=(
-        base-devel
-        nano
-        sudo
-        networkmanager
-        # Bootloader
-        grub
-        efibootmgr
-        # System drivers
-        $(get_cpu_pkgs)
-        $(get_gpu_pkgs)
-        # Please add below for additional packages
-    )
+    echo -e "                                      "
+    echo -e "--------------------------------------"
+    echo -e "        Installing base system        "
+    echo -e "--------------------------------------"
+    echo -e "                                      "
 
-    local PACKAGES=("${BASE_PKGS[@]}" "${ADDITIONAL_PKGS[@]}")
-
-    echo -ne "
-    -----------------------------------
-       Installing essential packages
-    -----------------------------------
-    "
-
-    pacstrap -K /mnt "${PACKAGES[@]}"
+    pacstrap -K /mnt "${BASE_PKGS[@]}"
 }
 
 generate_fstab() {
@@ -96,6 +91,40 @@ generate_fstab() {
 
     echo "Displaying fstab..."
     cat /mnt/etc/fstab
+    sleep 3
+}
+
+install_additional_packages() {
+    clear
+    local ADDITIONAL_PKGS=(
+        base-devel
+        nano
+        sudo
+        networkmanager
+        # Bootloader
+        grub
+        # System drivers
+        $(get_cpu_pkgs)
+        $(get_gpu_pkgs)
+        # Please add below for additional packages
+    )
+
+    # Enter chroot environment
+    echo -e "                                     "
+    echo -e "-------------------------------------"
+    echo -e "           Updating system           "
+    echo -e "-------------------------------------"
+    echo -e "                                     "
+
+    arch-chroot /mnt pacman -Syu --noconfirm
+
+    echo -e "                                      "
+    echo -e "--------------------------------------"
+    echo -e "    Installing additional packages    "
+    echo -e "--------------------------------------"
+    echo -e "                                      "
+
+    arch-chroot /mnt pacman -S --noconfirm "${ADDITIONAL_PKGS[@]}"
 }
 
 configure_pacman
@@ -103,3 +132,4 @@ display_cpu_info
 display_gpu_info
 install_packages
 generate_fstab
+install_additional_packages
