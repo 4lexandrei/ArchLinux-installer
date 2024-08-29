@@ -15,7 +15,8 @@ configure_pacman() {
 
     # Optimize mirrors with reflector
     optimize_mirrors() {
-        # Print or process the selected options
+        echo "Backing up current mirrorlist..."
+        cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
         echo "Updating mirrors with reflector..."
         reflector --verbose -a 48 -c "$MIRRORS" -l 20 -f 10 -p https --sort rate --save /etc/pacman.d/mirrorlist
         echo "Mirrors optimized."
@@ -94,6 +95,14 @@ generate_fstab() {
     sleep 3
 }
 
+copy_pacman_conf() {
+    echo "Copying pacman configurations to /mnt..."
+    cp /etc/pacman.conf /mnt/etc/pacman.conf
+    cp /etc/pacman.d/mirrorlist.bak /mnt/etc/pacman.d/mirrorlist.bak
+    cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
+    echo "Pacman configured."
+}
+
 install_additional_packages() {
     clear
     local ADDITIONAL_PKGS=(
@@ -132,4 +141,8 @@ display_cpu_info
 display_gpu_info
 install_base_system
 generate_fstab
+copy_pacman_conf
+
+echo -e "Entering chroot environment..."
+
 install_additional_packages

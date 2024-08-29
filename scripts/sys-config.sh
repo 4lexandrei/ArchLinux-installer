@@ -4,19 +4,6 @@ clear
 
 source ./ArchLinux-installer/config.sh
 
-# Configure pacman for faster installation
-configure_pacman() {
-    # Enable ParallelDownloads
-    sed -i "s/^#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
-    
-    # Enable ILoveCandy 
-    grep -qxF "ILoveCandy" /etc/pacman.conf || sed -i "/^ParallelDownloads/a ILoveCandy" /etc/pacman.conf
-    
-    # Enable multilib
-    sed -i "/\[multilib\]/,/Include/ s/^#//" /etc/pacman.conf
-}
-configure_pacman
-
 set_root_password() {
     while true; do
         read -rsp "Enter root password: " ROOT_PASSWORD
@@ -87,7 +74,7 @@ sys_accounts() {
 echo "Configuring system..."
 
 # Enable services
-systemctl enable NetworkManager --now
+systemctl enable NetworkManager
 
 # Set Time
 ln -sf /usr/share/zoneinfo/"$TIMEZONE" /etc/localtime
@@ -99,8 +86,9 @@ locale-gen
 echo "LANG=$LOCALE.UTF-8" > /etc/locale.conf
 
 # Set keyboard layout
-localectl --no-convert set-keymap "$KEYBOARD"
-localectl --no-convert set-x11-keymap "$KEYBOARD"
+echo "KEYMAP=$KEYBOARD" > /etc/vconsole.conf
+# localectl --no-convert set-keymap "$KEYBOARD"
+# localectl --no-convert set-x11-keymap "$KEYBOARD"
 
 # Set hostname
 echo "$HOSTNAME" > /etc/hostname
@@ -112,4 +100,4 @@ sys_accounts
 echo "System configuration completed."
 
 echo -e ""
-echo -ne "Please use "umount -a" command and reboot the system."
+echo -e "Please use "umount -R /mnt" command and reboot the system."

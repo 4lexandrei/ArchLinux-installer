@@ -47,5 +47,5 @@ source ./config.sh
 copy_to_root
 
 # Chroot to /mnt
-arch-chroot /mnt ./ArchLinux-installer/scripts/bootloader.sh
 arch-chroot /mnt ./ArchLinux-installer/scripts/sys-config.sh
+arch-chroot /mnt ./ArchLinux-installer/scripts/bootloader.sh
