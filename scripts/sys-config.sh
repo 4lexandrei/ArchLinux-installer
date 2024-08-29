@@ -106,6 +106,6 @@ echo -e "+++===========================================+++"
 
 echo -e ""
 echo -e "+++===========================================+++"
-echo -e "     Please use "umount -R /mnt" command and     "
+echo -e "     Please use 'umount -R /mnt' command and     "
 echo -e "     reboot the system.                          "
 echo -e "+++===========================================+++"
