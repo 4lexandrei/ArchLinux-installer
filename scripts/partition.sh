@@ -48,7 +48,7 @@ preset_partition() {
 
     echo "Partitioning with preset configuration..."
 
-    echo "Creating GPT parition table on $DISK..."
+    echo "Creating GPT partition table on $DISK..."
     parted --script "$DISK" mklabel gpt
 
     if [ -d /sys/firmware/efi ]; then

@@ -4,6 +4,7 @@ source ./config.sh
 
 # Configure pacman for faster installation
 configure_pacman() {
+    echo "Configuring pacman..."
     # Enable ParallelDownloads
     sed -i "s/^#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
     
@@ -16,12 +17,20 @@ configure_pacman() {
     # Optimize mirrors with reflector
     optimize_mirrors() {
         echo "Backing up current mirrorlist..."
-        cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+
+        if [ ! -f /etc/pacman.d/mirrorlist.bak ]; then
+            cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+            echo "Mirrorlist backup created."
+        else
+            echo "Mirrorlist backup already exists."
+        fi
+
         echo "Updating mirrors with reflector..."
         reflector --verbose -a 48 -c "$MIRRORS" -l 20 -f 10 -p https --sort rate --save /etc/pacman.d/mirrorlist
         echo "Mirrors optimized."
     }
     optimize_mirrors
+    echo "Pacman configuration completed."
 }
 
 display_cpu_info() {
@@ -76,11 +85,11 @@ install_base_system() {
         linux-firmware
     )
 
-    echo -e "                                      "
-    echo -e "--------------------------------------"
-    echo -e "        Installing base system        "
-    echo -e "--------------------------------------"
-    echo -e "                                      "
+    echo -e "                                                "
+    echo -e "+++==========================================+++"
+    echo -e "             Installing base system             "
+    echo -e "+++==========================================+++"
+    echo -e "                                                "
 
     pacstrap -K /mnt "${BASE_PKGS[@]}"
 }
@@ -118,20 +127,19 @@ install_additional_packages() {
         # Please add below for additional packages
     )
 
-    # Enter chroot environment
-    echo -e "                                     "
-    echo -e "-------------------------------------"
-    echo -e "           Updating system           "
-    echo -e "-------------------------------------"
-    echo -e "                                     "
+    echo -e "                                                 "
+    echo -e "+++===========================================+++"
+    echo -e "                 Updating system                 "
+    echo -e "+++===========================================+++"
+    echo -e "                                                 "
 
     arch-chroot /mnt pacman -Syu --noconfirm
 
-    echo -e "                                      "
-    echo -e "--------------------------------------"
-    echo -e "    Installing additional packages    "
-    echo -e "--------------------------------------"
-    echo -e "                                      "
+    echo -e "                                                  "
+    echo -e "+++============================================+++"
+    echo -e "          Installing additional packages          "
+    echo -e "+++============================================+++"
+    echo -e "                                                  "
 
     arch-chroot /mnt pacman -S --noconfirm "${ADDITIONAL_PKGS[@]}"
 }
@@ -143,6 +151,8 @@ install_base_system
 generate_fstab
 copy_pacman_conf
 
-echo -e "Entering chroot environment..."
+echo -e "+++===========================================+++"
+echo -e "           Entering chroot environment           " 
+echo -e "+++===========================================+++"
 
 install_additional_packages

@@ -1,5 +1,15 @@
 #!/bin/bash
 
+display_banner() {
+    BANNER_PATH="./banner.sh"
+
+    if [ -f "$BANNER_PATH" ]; then
+        source "$BANNER_PATH"
+    else
+        echo "Banner not found: $BANNER_PATH"
+    fi
+}
+
 # Make scripts executable
 change_mode() {
     echo -e "Changing files permission to executable..."
@@ -23,13 +33,7 @@ copy_to_root() {
 
 clear
 
-LOGO_PATH="./logo.txt"
-
-if [ -f "$LOGO_PATH" ]; then
-    source "$LOGO_PATH"
-else
-    echo "Logo not found: $LOGO_PATH"
-fi
+display_banner
 
 change_mode
 
@@ -47,5 +51,5 @@ source ./config.sh
 copy_to_root
 
 # Chroot to /mnt
-arch-chroot /mnt ./ArchLinux-installer/scripts/sys-config.sh
 arch-chroot /mnt ./ArchLinux-installer/scripts/bootloader.sh
+arch-chroot /mnt ./ArchLinux-installer/scripts/sys-config.sh 

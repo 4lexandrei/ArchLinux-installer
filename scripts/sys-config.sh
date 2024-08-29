@@ -50,14 +50,14 @@ sys_accounts() {
 
     sys_accounts_prompts
 
-    echo -e "                               "
-    echo -e " ++=========================++ "
-    echo -e " ||     SYSTEM ACCOUNTS     || "
-    echo -e " ++=========================++ "
-    echo -e "    root                       "
-    echo -e "    User: $USERNAME            "
-    echo -e " +===========================+ "
-    echo -e "                               "
+    echo -e "                                                 "
+    echo -e "+++===========================================+++"
+    echo -e "|||              SYSTEM ACCOUNTS              |||"
+    echo -e "+++===========================================+++"
+    echo -e "      root                                       "
+    echo -e "      User: $USERNAME                            "
+    echo -e "+++===========================================+++"
+    echo -e "                                                 "
     # Set root password
     echo "root:$ROOT_PASSWORD" | chpasswd
 
@@ -71,7 +71,10 @@ sys_accounts() {
     echo "Done."
 }
 
-echo "Configuring system..."
+echo -e "+++===========================================+++"
+echo -e "              Configuring system...              "
+echo -e "+++===========================================+++"
+
 
 # Enable services
 systemctl enable NetworkManager
@@ -79,7 +82,7 @@ systemctl enable NetworkManager
 # Set Time
 ln -sf /usr/share/zoneinfo/"$TIMEZONE" /etc/localtime
 hwclock --systohc
-f
+
 # Set locale
 sed -i "/^# *$LOCALE.UTF-8/s/^# *//" /etc/locale.gen
 locale-gen
@@ -97,7 +100,12 @@ sleep 3
 
 sys_accounts
 
-echo "System configuration completed."
+echo -e "+++===========================================+++"
+echo -e "         System configuration completed.         "
+echo -e "+++===========================================+++"
 
 echo -e ""
-echo -e "Please use "umount -R /mnt" command and reboot the system."
+echo -e "+++===========================================+++"
+echo -e "     Please use "umount -R /mnt" command and     "
+echo -e "     reboot the system.                          "
+echo -e "+++===========================================+++"
