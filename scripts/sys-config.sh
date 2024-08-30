@@ -50,14 +50,13 @@ sys_accounts() {
 
     sys_accounts_prompts
 
-    echo -e "                                                 "
     echo -e "+++===========================================+++"
     echo -e "|||              SYSTEM ACCOUNTS              |||"
     echo -e "+++===========================================+++"
     echo -e "      root                                       "
     echo -e "      User: $USERNAME                            "
     echo -e "+++===========================================+++"
-    echo -e "                                                 "
+    
     # Set root password
     echo "root:$ROOT_PASSWORD" | chpasswd
 
@@ -71,9 +70,9 @@ sys_accounts() {
     echo "Done."
 }
 
-echo -e "+++===========================================+++"
-echo -e "              Configuring system...              "
-echo -e "+++===========================================+++"
+echo -e "+++==========================================+++"
+echo -e "               CONFIGURING SYSTEM               "
+echo -e "+++==========================================+++"
 
 
 # Enable services
@@ -105,6 +104,7 @@ echo -e "         System configuration completed.         "
 echo -e "+++===========================================+++"
 
 echo -e ""
+
 echo -e "+++===========================================+++"
 echo -e "     Please use 'umount -R /mnt' command and     "
 echo -e "     reboot the system.                          "

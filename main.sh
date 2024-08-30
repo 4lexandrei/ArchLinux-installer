@@ -17,6 +17,7 @@ change_mode() {
     chmod +x ./scripts/partition.sh
     chmod +x ./scripts/installation.sh
     chmod +x ./scripts/bootloader.sh
+    chmod +x ./scripts/zram.sh
     chmod +x ./scripts/sys-config.sh
     echo -e "Files permissions updated successfully."
     sleep 3
@@ -52,4 +53,5 @@ copy_to_root
 
 # Chroot to /mnt
 arch-chroot /mnt ./ArchLinux-installer/scripts/bootloader.sh
+arch-chroot /mnt ./ArchLinux-installer/scripts/zram.sh
 arch-chroot /mnt ./ArchLinux-installer/scripts/sys-config.sh 

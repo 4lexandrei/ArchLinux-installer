@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./lib/advance_menu.sh
+source ./lib/gum.sh
 
 retry=true
 
@@ -11,27 +11,26 @@ partition_prompts() {
 
 sys_config_prompts() {
     configure_timezone() {
+        clear
         local timezones=($(timedatectl list-timezones))
-        single_select_menu "Please select your timezone:" "${timezones[@]}"
-        TIMEZONE=$(echo "$SELECTED_OPTION")
+        TIMEZONE=$(gum choose --header "Please select your timezone:" "${timezones[@]}")
     }
 
     configure_locale() {
+        clear
         local locales=($(ls /usr/share/i18n/locales))
-        single_select_menu "Please select your locale:" "${locales[@]}"
-        LOCALE=$(echo "$SELECTED_OPTION") 
+        LOCALE=$(gum choose --header "Please select your locale:" "${locales[@]}")
     }
 
     configure_keyboard() {
+        clear
         local layouts=($(localectl list-keymaps))
-        single_select_menu "Please select you keyboard layout:" "${layouts[@]}"
-        LAYOUT=$(echo "$SELECTED_OPTION")
+        LAYOUT=$(gum choose --header "Please select you keyboard layout:" "${layouts[@]}")
     }
     
     configure_mirrors() {
         local countries=($(reflector --list-countries | awk 'NR > 2 {print $1}' | uniq))
-        multi_select_menu "Please select 1 or more mirrors:" "${countries[@]}"
-        MIRRORS=$(echo "$SELECTED_OPTIONS" | tr ' ' ',')
+        MIRRORS=$(gum choose --no-limit --header "Please select 1 or more mirrors:" "${countries[@]}" | tr '\n' ',') 
     }
 
     configure_timezone
@@ -39,8 +38,6 @@ sys_config_prompts() {
     configure_keyboard
     configure_mirrors
     read -rp "Enter hostname: " HOSTNAME
-
-    
 }
 
 display_user_inputs() {

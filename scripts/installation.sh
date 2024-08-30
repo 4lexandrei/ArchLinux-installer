@@ -85,11 +85,9 @@ install_base_system() {
         linux-firmware
     )
 
-    echo -e "                                                "
     echo -e "+++==========================================+++"
     echo -e "             Installing base system             "
     echo -e "+++==========================================+++"
-    echo -e "                                                "
 
     pacstrap -K /mnt "${BASE_PKGS[@]}"
 }
@@ -127,19 +125,15 @@ install_additional_packages() {
         # Please add below for additional packages
     )
 
-    echo -e "                                                 "
     echo -e "+++===========================================+++"
     echo -e "                 Updating system                 "
     echo -e "+++===========================================+++"
-    echo -e "                                                 "
 
     arch-chroot /mnt pacman -Syu --noconfirm
 
-    echo -e "                                                  "
     echo -e "+++============================================+++"
     echo -e "          Installing additional packages          "
     echo -e "+++============================================+++"
-    echo -e "                                                  "
 
     arch-chroot /mnt pacman -S --noconfirm "${ADDITIONAL_PKGS[@]}"
 }
