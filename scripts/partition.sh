@@ -1,7 +1,9 @@
 #!/bin/bash
-clear
 
 source ./config.sh
+source ./lib/gum.sh
+
+clear
 
 DISK="/dev/$DISK_ID"
 
@@ -42,7 +44,7 @@ preset_partition() {
         local END_POINT=$((START_POINT + PART_SIZE))
 
         parted --script "$DISK" mkpart '""' "$PART_TYPE" ${START_POINT}MiB ${END_POINT}MiB
-    
+
         START_POINT=$END_POINT
     }
 

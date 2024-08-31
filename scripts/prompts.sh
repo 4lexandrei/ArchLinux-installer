@@ -6,6 +6,7 @@ retry=true
 
 partition_prompts() {
     lsblk
+    echo ""
     read -rp "Please select your disk (e.g. sda): " DISK_ID
 }
 
@@ -27,10 +28,10 @@ sys_config_prompts() {
         local layouts=($(localectl list-keymaps))
         LAYOUT=$(gum choose --header "Please select you keyboard layout:" "${layouts[@]}")
     }
-    
+
     configure_mirrors() {
         local countries=($(reflector --list-countries | awk 'NR > 2 {print $1}' | uniq))
-        MIRRORS=$(gum choose --no-limit --header "Please select 1 or more mirrors:" "${countries[@]}" | tr '\n' ',') 
+        MIRRORS=$(gum choose --no-limit --header "Please select 1 or more mirrors:" "${countries[@]}" | tr '\n' ',')
     }
 
     configure_timezone

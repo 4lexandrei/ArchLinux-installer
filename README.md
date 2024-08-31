@@ -32,9 +32,5 @@ Script breakdown:
 
 Planning to add:
 - Manual partitioning
-- Support to zram 
+- Support to zram
 - Better bash UI
-
-
-
-

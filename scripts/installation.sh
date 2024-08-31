@@ -1,16 +1,20 @@
 #!/bin/bash
 
 source ./config.sh
+source ./lib/gum.sh
+source ./ArchLinux-installer/lib/gum.sh
+
+gum style "PACMAN CONFIGURATION"
 
 # Configure pacman for faster installation
 configure_pacman() {
     echo "Configuring pacman..."
     # Enable ParallelDownloads
     sed -i "s/^#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
-    
-    # Enable ILoveCandy 
+
+    # Enable ILoveCandy
     grep -qxF "ILoveCandy" /etc/pacman.conf || sed -i "/^ParallelDownloads/a ILoveCandy" /etc/pacman.conf
-    
+
     # Enable multilib
     sed -i "/\[multilib\]/,/Include/ s/^#//" /etc/pacman.conf
 
@@ -39,30 +43,19 @@ display_cpu_info() {
     # Detect processor info
     cpu_info=$(lscpu | grep -E 'AuthenticAMD|GenuineIntel' | head -1)
     case "$cpu_info" in
-        *AuthenticAMD*) echo "Detected AMD CPU" ;;
-        *GenuineIntel*) echo "Detected Intel CPU" ;;
+        *AuthenticAMD*) echo "CPU: AMD" ;;
+        *GenuineIntel*) echo "CPU: Intel" ;;
     esac
 }
 
 get_cpu_pkgs() {
     local cpu_info
     cpu_info=$(lscpu | grep -E 'AuthenticAMD|GenuineIntel' | head -1)
-    
+
     case "$cpu_info" in
         *AuthenticAMD*) echo "amd-ucode" ;;
         *GenuineIntel*) echo "intel-ucode" ;;
         *) echo "" ;; # Return nothing if no match
-    esac
-}
-
-get_gpu_pkgs() {
-   local gpu_info
-    gpu_info=$(lspci | grep -E 'AMD|Intel' | head -1)
-    
-    case "$gpu_info" in
-        *AMD*) echo "mesa vulkan-radeon libva-mesa-driver" ;;
-        *Intel*) echo "mesa vulkan-intel libva-intel-driver intel-media-driver" ;;
-        *) echo "mesa" ;; # Default if no match
     esac
 }
 
@@ -71,23 +64,33 @@ display_gpu_info() {
 
     # Detect graphics card info
     gpu_info=$(lspci | grep -E 'AMD|Intel' | head -1)
-    
+
     case "$gpu_info" in
-        *AMD*) echo "Detected AMD GPU" ;;
-        *Intel*) echo "Detected Intel GPU" ;;
+        *AMD*) echo "GPU: AMD" ;;
+        *Intel*) echo "GPU: Intel" ;;
     esac
 }
 
+get_gpu_pkgs() {
+   local gpu_info
+    gpu_info=$(lspci | grep -E 'AMD|Intel' | head -1)
+
+    case "$gpu_info" in
+        *AMD*) echo "mesa vulkan-radeon libva-mesa-driver" ;;
+        *Intel*) echo "mesa vulkan-intel libva-intel-driver intel-media-driver" ;;
+        *) echo "mesa" ;; # Default if no match
+    esac
+}
+
+
 install_base_system() {
     local BASE_PKGS=(
-        base 
-        linux 
+        base
+        linux
         linux-firmware
     )
 
-    echo -e "+++==========================================+++"
-    echo -e "             Installing base system             "
-    echo -e "+++==========================================+++"
+    gum style "ARCH LINUX INSTALLATION"
 
     pacstrap -K /mnt "${BASE_PKGS[@]}"
 }
@@ -98,6 +101,7 @@ generate_fstab() {
     genfstab -U /mnt >> /mnt/etc/fstab
 
     echo "Displaying fstab..."
+    gum style "FSTAB"
     cat /mnt/etc/fstab
     sleep 3
 }
@@ -123,30 +127,30 @@ install_additional_packages() {
         $(get_cpu_pkgs)
         $(get_gpu_pkgs)
         # Please add below for additional packages
+        gum
     )
 
-    echo -e "+++===========================================+++"
-    echo -e "                 Updating system                 "
-    echo -e "+++===========================================+++"
+    # !!!
+    # Need to find a way to check if gum is installed in the chroot-env
 
+    # Update system with pacman
+    gum style "UPDATING SYSTEM"
     arch-chroot /mnt pacman -Syu --noconfirm
 
-    echo -e "+++============================================+++"
-    echo -e "          Installing additional packages          "
-    echo -e "+++============================================+++"
-
+    # Install additional packages
+    gum style "INSTALLING ADDITIONAL PACKAGES"
     arch-chroot /mnt pacman -S --noconfirm "${ADDITIONAL_PKGS[@]}"
 }
 
 configure_pacman
+gum style "SYSTEM INFO"
 display_cpu_info
 display_gpu_info
 install_base_system
 generate_fstab
 copy_pacman_conf
 
-echo -e "+++===========================================+++"
-echo -e "           Entering chroot environment           " 
-echo -e "+++===========================================+++"
+gum style "ENTERING CHROOT ENVIRONMENT"
+sleep 3
 
 install_additional_packages

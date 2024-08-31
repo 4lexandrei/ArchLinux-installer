@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./lib/gum.sh
+
 display_banner() {
     BANNER_PATH="./banner.sh"
 
@@ -23,7 +25,7 @@ change_mode() {
     sleep 3
 }
 
-copy_to_root() {    
+copy_to_root() {
     echo "Copying files to root..."
 
     mkdir -p /mnt/ArchLinux-installer
@@ -36,12 +38,17 @@ clear
 
 display_banner
 
+# Update archlinux-keyring
+echo "Updating archlinux-keyring..."
+pacman --noconfirm -Sy archlinux-keyring
+
+check_gum
+
 change_mode
 
 # Run prompt.sh
 ./scripts/prompts.sh
 
-# Source the configuration file
 source ./config.sh
 
 # Run other scripts
@@ -54,4 +61,4 @@ copy_to_root
 # Chroot to /mnt
 arch-chroot /mnt ./ArchLinux-installer/scripts/bootloader.sh
 arch-chroot /mnt ./ArchLinux-installer/scripts/zram.sh
-arch-chroot /mnt ./ArchLinux-installer/scripts/sys-config.sh 
+arch-chroot /mnt ./ArchLinux-installer/scripts/sys-config.sh

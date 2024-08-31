@@ -1,8 +1,9 @@
 #!/bin/bash
 
-clear
-
 source ./ArchLinux-installer/config.sh
+source ./ArchLinux-installer/lib/gum.sh
+
+clear
 
 set_root_password() {
     while true; do
@@ -42,21 +43,28 @@ sys_accounts_prompts() {
     set_user_password
 }
 
-
 # System accounts
 sys_accounts() {
+    display_accounts() {
+        local title="SYSTEM ACCOUNTS"
+        local seperator="────────────────────────────"
+        local accounts=(
+            root
+            user: $USERNAME
+        )
+
+        local join=$(gum join --align center --vertical "$title" "$seperator" "${accounts[@]}")
+        gum style --border normal "$join"
+    }
+
     clear
+
     echo "Configuring system accounts..."
 
     sys_accounts_prompts
 
-    echo -e "+++===========================================+++"
-    echo -e "|||              SYSTEM ACCOUNTS              |||"
-    echo -e "+++===========================================+++"
-    echo -e "      root                                       "
-    echo -e "      User: $USERNAME                            "
-    echo -e "+++===========================================+++"
-    
+    display_accounts
+
     # Set root password
     echo "root:$ROOT_PASSWORD" | chpasswd
 
@@ -70,10 +78,7 @@ sys_accounts() {
     echo "Done."
 }
 
-echo -e "+++==========================================+++"
-echo -e "               CONFIGURING SYSTEM               "
-echo -e "+++==========================================+++"
-
+gum style "CONFIGURING SYSTEM"
 
 # Enable services
 systemctl enable NetworkManager
@@ -89,23 +94,16 @@ echo "LANG=$LOCALE.UTF-8" > /etc/locale.conf
 
 # Set keyboard layout
 echo "KEYMAP=$KEYBOARD" > /etc/vconsole.conf
-# localectl --no-convert set-keymap "$KEYBOARD"
-# localectl --no-convert set-x11-keymap "$KEYBOARD"
 
 # Set hostname
 echo "$HOSTNAME" > /etc/hostname
 
-sleep 3 
+sleep 3
 
 sys_accounts
 
-echo -e "+++===========================================+++"
-echo -e "         System configuration completed.         "
-echo -e "+++===========================================+++"
+gum style "SYSTEM CONFIGURATION COMPLETED"
 
 echo -e ""
 
-echo -e "+++===========================================+++"
-echo -e "     Please use 'umount -R /mnt' command and     "
-echo -e "     reboot the system.                          "
-echo -e "+++===========================================+++"
+gum style "Please use the command 'umount -R /mnt' and 'reboot' the system"

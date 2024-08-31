@@ -1,7 +1,10 @@
 #!/bin/bash
+source ./ArchLinux-installer/config.sh
+source ./ArchLinux-installer/lib/gum.sh
+
 clear
 
-source ./ArchLinux-installer/config.sh
+gum style "BOOTLOADER CONFIGURATION"
 
 echo "Configuring bootloader..."
 

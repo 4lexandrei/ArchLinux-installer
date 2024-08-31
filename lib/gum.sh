@@ -2,6 +2,7 @@
 
 check_gum() {
     # Check if gum is installed
+    echo "Checking gum dependency..."
     if ! gum -v &> /dev/null; then
         echo "gum is not installed. Installing gum..."
         pacman -S --noconfirm gum
@@ -14,6 +15,7 @@ gum() {
     local light_blue="#0000FF"
     local light_cyan="#00FFFF"
 
+    # Gum choose
     export GUM_CHOOSE_CURSOR_FOREGROUND="$light_cyan"
     export GUM_CHOOSE_CURSOR_BACKGROUND=""
     export GUM_CHOOSE_HEADER_FOREGROUND="$light_blue"
@@ -23,8 +25,13 @@ gum() {
     export GUM_CHOOSE_SELECTED_FOREGROUND="$light_cyan"
     export GUM_CHOOSE_SELECTED_BACKGROUND=""
     export GUM_CHOOSE_HEIGHT="10"
+
+    # Gum style
+    export BORDER="normal"
+    export PADDING="0 5"
+
     command gum "$@"
 }
 
-check_gum
-sleep 3
+
+# Please never call a function inside this file
