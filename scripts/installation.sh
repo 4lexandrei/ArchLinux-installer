@@ -2,6 +2,7 @@
 
 source ./config.sh
 source ./lib/gum.sh
+source ./ArchLinux-installer/lib/gum.sh
 
 # Configure pacman for faster installation
 configure_pacman() {
