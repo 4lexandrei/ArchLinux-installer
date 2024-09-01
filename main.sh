@@ -18,6 +18,7 @@ change_mode() {
     chmod +x ./scripts/prompts.sh
     chmod +x ./scripts/partition.sh
     chmod +x ./scripts/installation.sh
+    chmod +x ./scripts/packages.sh
     chmod +x ./scripts/bootloader.sh
     chmod +x ./scripts/zram.sh
     chmod +x ./scripts/sys-config.sh
@@ -37,6 +38,8 @@ copy_to_root() {
 clear
 
 display_banner
+
+timedatectl set-ntp true
 
 # Update archlinux-keyring
 echo "Updating archlinux-keyring..."
@@ -60,6 +63,7 @@ copy_to_root
 ./scripts/installation.sh
 
 # Chroot to /mnt
+arch-chroot /mnt ./ArchLinux-installer/scripts/packages.sh
 arch-chroot /mnt ./ArchLinux-installer/scripts/bootloader.sh
 arch-chroot /mnt ./ArchLinux-installer/scripts/zram.sh
 arch-chroot /mnt ./ArchLinux-installer/scripts/sys-config.sh
