@@ -32,3 +32,4 @@ Script breakdown:
 
 Planning to add:
 - Manual partitioning
+- Set X11 keymap

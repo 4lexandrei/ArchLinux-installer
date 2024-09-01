@@ -63,17 +63,26 @@ display_gpu_info() {
     local gpu_info="No specific GPU detected"
 
     # Detect graphics card info
-    gpu_info=$(lspci | grep -E 'AMD|Intel' | head -1)
+    gpu_info=$(lspci | grep -i 'VGA' | head -1)
 
     case "$gpu_info" in
-        *AMD*) echo "GPU: AMD" ;;
-        *Intel*) echo "GPU: Intel" ;;
+        *AMD*) 
+            echo "GPU: AMD"
+            echo "$gpu_info" 
+            ;;
+        *Intel*) 
+            echo "GPU: Intel"
+            echo "$gpu_info" 
+            ;;
+        *)
+            echo "$gpu_info" 
+            ;;
     esac
 }
 
 get_gpu_pkgs() {
    local gpu_info
-    gpu_info=$(lspci | grep -E 'AMD|Intel' | head -1)
+    gpu_info=$(lspci | grep -i 'VGA' | head -1)
 
     case "$gpu_info" in
         *AMD*) echo "mesa vulkan-radeon libva-mesa-driver" ;;
@@ -124,10 +133,6 @@ install_essential_packages() {
         $(get_cpu_pkgs)
     )
 
-    # Update system with pacman
-    gum style "UPDATING SYSTEM"
-    arch-chroot /mnt pacman -Syu --noconfirm
-
     # Install essential packages
     gum style "INSTALLING ESSENTIAL PACKAGES"
     arch-chroot /mnt pacman -S --noconfirm --needed "${ESSENTIAL_PKGS[@]}"
@@ -161,8 +166,11 @@ arch-chroot /mnt ./ArchLinux-installer/lib/gum.sh
 
 arch-chroot /mnt gum style "CHROOT ENVIRONMENT"
 
-install_essential_packages
+# Update system with pacman
+gum style "UPDATING SYSTEM"
+arch-chroot /mnt pacman -Syu --noconfirm
 
+install_essential_packages
 
 if [[ "$INSTALL_ADDITIONAL_PACKAGES" = "true" ]]; then
     install_additional_packages
