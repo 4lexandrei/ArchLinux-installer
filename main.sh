@@ -26,7 +26,7 @@ change_mode() {
 }
 
 copy_to_root() {
-    echo "Copying files to root..."
+    echo "Copying ArchLinux-installer files to root..."
 
     mkdir -p /mnt/ArchLinux-installer
     cp -r /root/ArchLinux-installer/* /mnt/ArchLinux-installer
@@ -52,12 +52,12 @@ change_mode
 # Source configuration file
 source ./config.sh
 
+# Copy ArchLinux-installer to root
+copy_to_root
+
 # Run other scripts
 ./scripts/partition.sh
 ./scripts/installation.sh
-
-# Copy ArchLinux-installer to root
-copy_to_root
 
 # Chroot to /mnt
 arch-chroot /mnt ./ArchLinux-installer/scripts/bootloader.sh
