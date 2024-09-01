@@ -114,22 +114,29 @@ copy_pacman_conf() {
     echo "Pacman configured."
 }
 
-install_additional_packages() {
-    clear
-    local ADDITIONAL_PKGS=(
+install_essential_packages() {
+    local ESSENTIAL_PKGS=(
         base-devel
         nano
         sudo
         networkmanager
-        # System drivers
-        $(get_cpu_pkgs)
-        $(get_gpu_pkgs)
-        # Please add below for additional packages
     )
 
     # Update system with pacman
     gum style "UPDATING SYSTEM"
     arch-chroot /mnt pacman -Syu --noconfirm
+
+    # Install essential packages
+    gum style "INSTALLING ESSENTIAL PACKAGES"
+    arch-chroot /mnt pacman -S --noconfirm "${ESSENTIAL_PKGS[@]}"
+}
+
+install_additional_packages() {
+    local ADDITIONAL_PKGS=(
+        # System drivers
+        $(get_cpu_pkgs)
+        $(get_gpu_pkgs)
+    )
 
     # Install additional packages
     gum style "INSTALLING ADDITIONAL PACKAGES"
@@ -146,9 +153,15 @@ copy_pacman_conf
 
 gum style "ENTERING CHROOT ENVIRONMENT"
 sleep 3
+clear
 
 # Check if gum is available inside chroot environment
 arch-chroot /mnt ./ArchLinux-installer/lib/gum.sh
+
+arch-chroot /mnt gum style "CHROOT ENVIRONMENT"
+
+install_essential_packages
+
 
 if [[ "$INSTALL_ADDITIONAL_PACKAGES" = "true" ]]; then
     install_additional_packages
