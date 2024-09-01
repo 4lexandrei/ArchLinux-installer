@@ -80,7 +80,7 @@ display_gpu_info() {
 
 get_gpu_pkgs() {
    local gpu_info
-    gpu_info=$(lspci | grep -i 'VGA' | head -1)
+    gpu_info=$(lspci | grep -Ei 'VGA' | head -1)
 
     case "$gpu_info" in
         *AMD*) echo "mesa vulkan-radeon libva-mesa-driver" ;;
