@@ -129,9 +129,6 @@ install_additional_packages() {
         # Please add below for additional packages
     )
 
-    # Check if gum is available inside chroot environment
-    arch-chroot /mnt ./ArchLinux-installer/lib/gum.sh
-
     # Update system with pacman
     gum style "UPDATING SYSTEM"
     arch-chroot /mnt pacman -Syu --noconfirm
@@ -151,6 +148,9 @@ copy_pacman_conf
 
 gum style "ENTERING CHROOT ENVIRONMENT"
 sleep 3
+
+# Check if gum is available inside chroot environment
+arch-chroot /mnt ./ArchLinux-installer/lib/gum.sh
 
 if [[ "$INSTALL_ADDITIONAL_PACKAGES" = "true" ]]; then
     install_additional_packages
