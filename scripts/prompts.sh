@@ -29,10 +29,10 @@ installation_prompts() {
         local prompt="Would you like to install additional packages? (GPU drivers)"
         response=$(gum choose --header "$prompt" "Yes (recommended)" "No")
 
-        if [[ "$response" == "Yes" ]]; then
-            INSTALL_ADDITIONAL_PACKAGES="true"
-        else
+        if [[ "$response" == "No" ]]; then
             INSTALL_ADDITIONAL_PACKAGES="false"
+        else
+            INSTALL_ADDITIONAL_PACKAGES="true"
         fi
     }
 
