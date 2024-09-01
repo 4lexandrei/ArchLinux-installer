@@ -92,7 +92,7 @@ install_base_system() {
 
     gum style "ARCH LINUX INSTALLATION"
 
-    pacstrap -K /mnt "${BASE_PKGS[@]}"
+    pacstrap -K --needed /mnt "${BASE_PKGS[@]}"
 }
 
 generate_fstab() {
@@ -130,7 +130,7 @@ install_essential_packages() {
 
     # Install essential packages
     gum style "INSTALLING ESSENTIAL PACKAGES"
-    arch-chroot /mnt pacman -S --noconfirm "${ESSENTIAL_PKGS[@]}"
+    arch-chroot /mnt pacman -S --noconfirm --needed "${ESSENTIAL_PKGS[@]}"
 }
 
 install_additional_packages() {
@@ -141,7 +141,7 @@ install_additional_packages() {
 
     # Install additional packages
     gum style "INSTALLING ADDITIONAL PACKAGES"
-    arch-chroot /mnt pacman -S --noconfirm "${ADDITIONAL_PKGS[@]}"
+    arch-chroot /mnt pacman -S --noconfirm --needed "${ADDITIONAL_PKGS[@]}"
 }
 
 configure_pacman

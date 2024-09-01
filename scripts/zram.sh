@@ -5,7 +5,7 @@
     gum style "ZRAM CONFIGURATION"
     echo "Configuring zram..."
     echo "Installing zram-generator..."
-    pacman -S --noconfirm zram-generator
+    pacman -S --noconfirm --needed zram-generator
 
     ZRAM_CONFIG_FILE="/etc/systemd/zram-generator.conf"
     echo "Creating zram configuration file..."
