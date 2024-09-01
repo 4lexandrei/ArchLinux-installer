@@ -101,7 +101,7 @@ install_base_system() {
 
     gum style "ARCH LINUX INSTALLATION"
 
-    pacstrap -K --needed /mnt "${BASE_PKGS[@]}"
+    pacstrap -K /mnt "${BASE_PKGS[@]}"
 }
 
 generate_fstab() {
