@@ -52,11 +52,11 @@ change_mode
 # Source configuration file
 source ./config.sh
 
+./scripts/partition.sh
+
 # Copy ArchLinux-installer to root
 copy_to_root
 
-# Run other scripts
-./scripts/partition.sh
 ./scripts/installation.sh
 
 # Chroot to /mnt
