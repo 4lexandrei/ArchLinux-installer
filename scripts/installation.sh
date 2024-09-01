@@ -4,10 +4,10 @@ source ./config.sh
 source ./lib/gum.sh
 source ./ArchLinux-installer/lib/gum.sh
 
-gum style "PACMAN CONFIGURATION"
 
 # Configure pacman for faster installation
 configure_pacman() {
+    gum style "PACMAN CONFIGURATION"
     echo "Configuring pacman..."
     # Enable ParallelDownloads
     sed -i "s/^#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
@@ -127,11 +127,10 @@ install_additional_packages() {
         $(get_cpu_pkgs)
         $(get_gpu_pkgs)
         # Please add below for additional packages
-        gum
     )
 
-    # !!!
-    # Need to find a way to check if gum is installed in the chroot-env
+    # Check if gum is available inside chroot environment
+    arch-chroot /mnt ./ArchLinux-installer/lib/gum.sh
 
     # Update system with pacman
     gum style "UPDATING SYSTEM"

@@ -18,12 +18,13 @@
 
     echo "zram configuration file created."
 
+    # Doesn't work inside chroot
+    # systemctl daemon-reload
+    # systemctl start systemd-zram-setup@zram0.service
 
-    systemctl daemon-reload # Doesn't work inside chroot
-
-    systemctl start systemd-zram-setup@zram0.service # Doesn't word inside chroot
-
-    echo "zram configuration completed." 
+    echo "zram configuration completed."
+    echo "Note: zram swap will be available after reboot."
 }
 
 configure_zram
+sleep 3

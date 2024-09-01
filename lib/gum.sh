@@ -3,7 +3,7 @@
 check_gum() {
     # Check if gum is installed
     echo "Checking gum dependency..."
-    if ! gum -v &> /dev/null; then
+    if ! command -v gum &> /dev/null; then
         echo "gum is not installed. Installing gum..."
         pacman -S --noconfirm gum
     else
@@ -33,5 +33,9 @@ gum() {
     command gum "$@"
 }
 
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    check_gum
+fi
 
 # Please never call a function inside this file

@@ -49,6 +49,7 @@ change_mode
 # Run prompt.sh
 ./scripts/prompts.sh
 
+# Source configuration file
 source ./config.sh
 
 # Run other scripts

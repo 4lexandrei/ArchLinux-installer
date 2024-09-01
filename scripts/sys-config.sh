@@ -50,7 +50,7 @@ sys_accounts() {
         local seperator="────────────────────────────"
         local accounts=(
             root
-            user: $USERNAME
+            user: "$USERNAME"
         )
 
         local join=$(gum join --align center --vertical "$title" "$seperator" "${accounts[@]}")
@@ -94,6 +94,7 @@ echo "LANG=$LOCALE.UTF-8" > /etc/locale.conf
 
 # Set keyboard layout
 echo "KEYMAP=$KEYBOARD" > /etc/vconsole.conf
+# Need to find a solution for setting up x11 keymap
 
 # Set hostname
 echo "$HOSTNAME" > /etc/hostname
