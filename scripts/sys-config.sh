@@ -81,7 +81,7 @@ sys_accounts() {
 gum style "CONFIGURING SYSTEM"
 
 # Enable services
-systemctl enable NetworkManager.service
+systemctl enable NetworkManager
 systemctl enable fstrim.timer   # Enables Periodic TRIM
 
 # Set Time
