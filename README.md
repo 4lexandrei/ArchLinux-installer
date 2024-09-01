@@ -1,35 +1,41 @@
 # ArchLinux-installer
-Another ArchLinux install script
+Another automated installation bash script for Arch Linux.
 
 ## How to use
-Preparation
-```
-loadkeys layout
-pacman -Sy archlinux-keyring
+### Preparation
+Before running the script, prepare your system with the following commands:
+```bash
+loadkeys <layout> 
 pacman -Sy git
 ```
-Clone repo and run script
-```
+Clone the repository and run script
+```bash
 git clone https://github.com/4lexandrei/ArchLinux-installer.git
 cd ArchLinux-installer/
 ./main.sh
 ```
-
+### After reboot (Optional)
+Set x11 keymap
+```bash
+localectl --no-convert set-x11-keymap <layout>
+```
 ## More informations
-Supports:
-- GPT: UEFI & BIOS
-- Intel & AMD drivers
+### Features:
+- **GPT Partitioning**: Supports UEFI or BIOS.
+- **Drivers**: Supports Intel, AMD or Nvidia.
+- **Zram swap**: Configures zram for efficient swapping.
+- **SSD Maintenance**: Enables periodic TRIM.
 
-Warning!
-Currently doesn't support:
-- Nvidia GPU drivers.
-
-Script breakdown:
+### Script Breakdown:
 1) Preset partition
 2) Install packages
 3) GRUB Bootloader setup
-4) System configuration
+4) Set up zram swap 
+5) System configuration
 
-Planning to add:
+### Planned feature:
 - Manual partitioning
 - Set X11 keymap
+
+### Dependencies
+- gum
