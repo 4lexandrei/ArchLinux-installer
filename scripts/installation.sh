@@ -120,6 +120,8 @@ install_essential_packages() {
         nano
         sudo
         networkmanager
+        # Microcode
+        $(get_cpu_pkgs)
     )
 
     # Update system with pacman
@@ -134,7 +136,6 @@ install_essential_packages() {
 install_additional_packages() {
     local ADDITIONAL_PKGS=(
         # System drivers
-        $(get_cpu_pkgs)
         $(get_gpu_pkgs)
     )
 

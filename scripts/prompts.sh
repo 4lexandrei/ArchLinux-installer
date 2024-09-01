@@ -26,7 +26,7 @@ installation_prompts() {
     }
 
     additional_packages_prompt() {
-        local prompt="Would you like to install additional packages? (CPU microcode, GPU drivers and other utilities)"
+        local prompt="Would you like to install additional packages? (GPU drivers)"
         response=$(gum choose --header "$prompt" "Yes (recommended)" "No")
 
         if [[ "$response" == "Yes" ]]; then
