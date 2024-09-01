@@ -33,7 +33,7 @@ gum() {
     command gum "$@"
 }
 
-
+# Run when executed
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     check_gum
 fi

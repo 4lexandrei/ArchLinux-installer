@@ -81,7 +81,8 @@ sys_accounts() {
 gum style "CONFIGURING SYSTEM"
 
 # Enable services
-systemctl enable NetworkManager
+systemctl enable NetworkManager.service
+systemctl enable fstrim.timer   # Enables Periodic TRIM
 
 # Set Time
 ln -sf /usr/share/zoneinfo/"$TIMEZONE" /etc/localtime

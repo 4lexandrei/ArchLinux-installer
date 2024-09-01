@@ -86,7 +86,7 @@ get_gpu_pkgs() {
 install_base_system() {
     local BASE_PKGS=(
         base
-        linux
+        $LINUX_KERNEL
         linux-firmware
     )
 
@@ -152,4 +152,6 @@ copy_pacman_conf
 gum style "ENTERING CHROOT ENVIRONMENT"
 sleep 3
 
-install_additional_packages
+if [[ "$INSTALL_ADDITIONAL_PACKAGES" = "true" ]]; then
+    install_additional_packages
+fi
