@@ -47,10 +47,10 @@ sys_accounts_prompts() {
 sys_accounts() {
     display_accounts() {
         local title="SYSTEM ACCOUNTS"
-        local seperator="────────────────────────────"
+        local seperator="─────────────────────────────────"
         local accounts=(
             root
-            user: "$USERNAME"
+            user:"$USERNAME"
         )
 
         local join=$(gum join --align center --vertical "$title" "$seperator" "${accounts[@]}")
