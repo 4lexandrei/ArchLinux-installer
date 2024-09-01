@@ -121,8 +121,6 @@ install_additional_packages() {
         nano
         sudo
         networkmanager
-        # Bootloader
-        grub
         # System drivers
         $(get_cpu_pkgs)
         $(get_gpu_pkgs)
