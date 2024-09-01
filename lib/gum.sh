@@ -3,7 +3,7 @@
 check_gum() {
     # Check if gum is installed
     echo "Checking gum dependency..."
-    if ! command -v gum &> /dev/null; then
+    if ! gum -v &> /dev/null; then
         echo "gum is not installed. Installing gum..."
         pacman -S --noconfirm gum
     else
