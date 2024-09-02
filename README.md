@@ -27,16 +27,16 @@ localectl --no-convert set-x11-keymap <layout>
 - **Zram swap**: Configures zram for efficient swapping.
 - **SSD Maintenance**: Enables periodic TRIM.
 
+### Unsupported features:
+- Manual partitioning
+- Set X11 keymap
+
 ### Script Breakdown:
 1) Preset partition
 2) Install packages
 3) GRUB Bootloader setup
 4) Set up zram swap 
 5) System configuration
-
-### Unsupported features:
-- Manual partitioning
-- Set X11 keymap
 
 ### Dependencies
 - gum
