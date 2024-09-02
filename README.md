@@ -33,7 +33,7 @@ localectl --no-convert set-x11-keymap <layout>
 4) Set up zram swap 
 5) System configuration
 
-### Planned feature:
+### Unsupported features:
 - Manual partitioning
 - Set X11 keymap
 
