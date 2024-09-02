@@ -18,7 +18,7 @@ get_cpu_packages() {
             ;;
     esac
 
-    echo "CPU packages: $cpu_packages"
+    echo "CPU packages: ${cpu_packages[@]}"
 }
 
 
@@ -26,20 +26,20 @@ get_gpu_packages() {
    local gpu_info="No specific GPU detected."
    gpu_packages=()
 
-    gpu_info=$(lspci | grep -i 'VGA|3D' | head -1)
+    gpu_info=$(lspci | grep -iE 'VGA|3D' | head -1)
 
     case "$gpu_info" in
         *NVIDIA*)
             gpu_packages+=("nvidia") ;;
         *AMD*|*Radeon*)
-            gpu_packages+=("mesa vulkan-radeon libva-mesa-driver") ;;
+            gpu_packages+=("mesa" "vulkan-radeon" "libva-mesa-driver") ;;
         *Intel*)
-            gpu_packages+=("mesa vulkan-intel libva-intel-driver intel-media-driver") ;;
+            gpu_packages+=("mesa" "vulkan-intel" "libva-intel-driver" "intel-media-driver") ;;
         *)
             gpu_packages+=("mesa") ;;
     esac
 
-    echo "GPU packages: $gpu_packages"
+    echo "GPU packages: ${gpu_packages[@]}"
 }
 
 install_essential_packages() {
@@ -51,7 +51,7 @@ install_essential_packages() {
         sudo
         networkmanager
         # Microcode
-        "$cpu_packages"
+        "${cpu_packages[@]}"
     )
 
     # Install essential packages
@@ -64,7 +64,7 @@ install_additional_packages() {
     get_gpu_packages
 
     local ADDITIONAL_PKGS=(
-        "$gpu_packages"
+        "${gpu_packages[@]}"
     )
 
     # Install additional packages
