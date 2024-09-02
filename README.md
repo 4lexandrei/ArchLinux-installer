@@ -6,6 +6,7 @@ Another automated installation bash script for Arch Linux.
 Before running the script, prepare your system with the following commands:
 ```bash
 loadkeys <layout> 
+pacman -Sy archlinux-keyring
 pacman -Sy git
 ```
 Clone the repository and run script
